@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    tools:context="com.dev_marinov.testjust7.MainActivity">
+
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="установка регулярного обновления курсов валют"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/timePicker"
+        />
+
+    <TimePicker
+        android:id="@+id/timePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="AppTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timePicker"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/startAlarm"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/startAlarm"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:text="запуcтить обновления"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/stopAlarm"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/stopAlarm"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:text="остановить обновления"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
