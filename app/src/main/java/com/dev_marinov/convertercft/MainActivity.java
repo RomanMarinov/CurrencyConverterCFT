@@ -41,10 +41,7 @@ import java.util.stream.Collectors;
 
 import cz.msebera.android.httpclient.Header;
 
-
 public class MainActivity extends AppCompatActivity {
-
-    private boolean mShowingBack = false;
 
     HashMap<Integer, ObjectListValute> hashMap = new HashMap<>();
     Intent intent;
@@ -57,27 +54,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportActionBar().hide();
+        getSupportActionBar().hide(); // скрыть
+        setStatusBar(); // установка черного цвета текста строки состояния
+        getData(); // получить данные карсов
 
-        // установка черного цвета текста строки состояния
-        setStatusBar();
-
-        getData();
-
+        // savedInstanceState то загрузить fragmentCalc
         if (savedInstanceState == null) {
-            Log.e("33332","выполнилось 2");
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.container, new FragmentCalc())
                     .commit();
         }
-
     }
 
-
-
+    // метода переходов фрагментов и анимации
     public void flipCard(String string) {
-
         if(string.equals("backStack"))
         {
             // popBackStack() озвращающает предыдущее состояние стека по этому имени.
@@ -112,30 +103,6 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
     }
-
-//    public void flipCard() {
-//        if (mShowingBack) {
-//            mShowingBack = false;
-//            Log.e("33332","выполнилось 3");
-//            // popBackStack() озвращающает предыдущее состояние стека по этому имени.
-//            getSupportFragmentManager().popBackStack();
-//        } else {
-//            Log.e("33332","выполнилось 4");
-//            mShowingBack = true;
-//            getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .setCustomAnimations(
-//                            R.animator.card_flip_right_enter,
-//                            R.animator.card_flip_right_exit,
-//                            R.animator.card_flip_left_enter,
-//                            R.animator.card_flip_left_exit)
-//                    .replace(R.id.container, new FragmentList())
-//                    .addToBackStack(null)
-//                    .commit();
-//        }
-//    }
-
-
 
     // установка черного цвета текста строки состояния
     public void setStatusBar()
@@ -192,50 +159,37 @@ public class MainActivity extends AppCompatActivity {
                         hashMap.put(count, new ObjectListValute(keys, name, value));
                     }
 
-
+                    // работа с кампаратором для алфавитной записи рублей
                     arrayList = new ArrayList<ObjectListValute>(hashMap.values());
                     Collections.sort(arrayList, new Sorted());
-
+                    // проверка записоль так как надо и нет
                     for (int i = 0; i < arrayList.size(); i++) {
                         Log.e("showme","-nameValute-" + arrayList.get(i).nameValute);
                     }
 
-
-
-
-                            // intent для того чтобы только после заполнения hashmap
+                    // intent для того чтобы только после заполнения hashmap
                     // FragmentCalc получил сообщение работать в hashmap и получать из него данные
-                            intent = new Intent(FragmentCalc.SECOND_ACTION);
-                            intent.putExtra("KeySearch", "search");
-                            sendBroadcast(intent);
-                            Log.e("aaaaaa", "заходит в броадActivity=");
-
-
-
-
-                    //adapterList.notifyDataSetChanged();
-                    Log.e("4444","-сначала этот-");
+                    intent = new Intent(FragmentCalc.SECOND_ACTION);
+                    intent.putExtra("KeySearch", "search");
+                    sendBroadcast(intent);
 
                 } catch (JSONException e) {
                     Log.e("3333","-try catch-" + e);
                 }
             }
         });
-//
-
     }
+
     // считывает файл
     public String loadSettingString(String key, String default_value) {
         sharedPreferences = getSharedPreferences("myPref", MODE_PRIVATE);
         return sharedPreferences.getString(key, default_value);
     }
-
     // сохраняет в файл
     public void saveSettingString(String key, String value) {
         sharedPreferences = getSharedPreferences("myPref", MODE_PRIVATE);
         SharedPreferences.Editor ed = sharedPreferences.edit(); // edit() - редактирование файлов
         ed.putString(key, value); // добавляем ключ и его значение
-
         if (ed.commit()) // сохранить файл
         {
             //успешно записано данные в файл

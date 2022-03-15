@@ -35,7 +35,7 @@ public class FragmentAlarm extends Fragment {
         tvStatus = frag.findViewById(R.id.tvStatus);
         tvStatus.setText("" + ((MainActivity)getActivity()).loadSettingString("statusAlarm", ""));
 
-        // прикрепим кнопку на клик
+        // запуск alarmManager
         startAlarm = frag.findViewById(R.id.startAlarm);
         startAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +57,7 @@ public class FragmentAlarm extends Fragment {
                 startAlarm(calendar.getTimeInMillis());
             }
         });
+        // остановка alarmManager
         stopAlarm = frag.findViewById(R.id.stopAlarm);
         stopAlarm.setOnClickListener(new View.OnClickListener() {
             @Override

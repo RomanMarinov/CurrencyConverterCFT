@@ -2,34 +2,25 @@ package com.dev_marinov.convertercft;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.TreeMap;
 
 public class AdapterList extends RecyclerView.Adapter<AdapterList.Holder> {
-
     Context context;
+    ArrayList<ObjectListValute> arrayList;
 
     Intent intent;
-    ArrayList<ObjectListValute> arrayList;
 
     public AdapterList(Context context, ArrayList<ObjectListValute> arrayList) {
         this.context = context;
@@ -58,7 +49,7 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.Holder> {
             holder.tvCurrency.setText(objectListValute.nameValute);
             holder.tvKeyValuteName.setText(objectListValute.keyValuteName);
         }
-
+        // клик на любую валюту, передача ее во fragmentCalc и переход назад
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

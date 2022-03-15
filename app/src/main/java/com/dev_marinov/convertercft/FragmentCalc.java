@@ -41,25 +41,22 @@ import java.util.concurrent.TimeUnit;
 public class FragmentCalc extends Fragment {
 
    View frag;
-   TextView tvUpdate;
-   Button btUpdate;
-   TextView tvEditCurrencyLeft, tvEditCurrencyRight;
-   CardView cardVEditCurrencyLeft, cardVEditCurrencyRight;
-   TextView tvCharNameLeft, tvCharNameRight;
-   EditText edPriceLeft, edPriceRight;
-   String temp = "";
-   TextWatcher textWatcherLeft, textWatcherRight;
-   BroadcastReceiver broadcastReceiver;
-   BroadcastReceiver broadcastReceiverHashMap;
-   public final static String FIRST_ACTION = "first_action";
-   public final static String SECOND_ACTION = "second_action";
+   TextView tvUpdate; // показывается дату последнего обновления
+   CardView cardVEditCurrencyLeft, cardVEditCurrencyRight; // это выбор валюты и переход через клик во fragmentList
+   TextView tvCharNameLeft, tvCharNameRight; // тут храняться которткие символы валюты (например AUD)
+   EditText edPriceLeft, edPriceRight; // ввод/вывод значений конвертации валют
+   String temp = ""; // переменная для логики вычисления
+   TextWatcher textWatcherLeft, textWatcherRight; // слушатель для ввода данных
+   BroadcastReceiver broadcastReceiver; // приемник для получения сообщений из адаптера по клику (выбор валюты)
+   BroadcastReceiver broadcastReceiverHashMap; // приемник для получения сообщений из что данные курсов записаны в hashMap
+   public final static String FIRST_ACTION = "first_action"; // action для broadcastReceiver
+   public final static String SECOND_ACTION = "second_action"; // action для broadcastReceiverHashMap
    boolean flag; // переменная для костыля проблемы отправки дважды одинакого сообщения от broadcastReceiver
    boolean flagHashMap; // переменная для костыля проблемы отправки дважды одинакого сообщения от broadcastReceiverHashMap
    double tempRateValuteLeft, tempRateValuteRight;
    ProgressBar progressBar;
-   ImageView imgUpdate, imgSetting;
-   Handler handler;
-   ConstraintLayout clMain;
+   Handler handler; // для задержки работы progressBar
+   ImageView imgUpdate, imgSetting; // 1 - это обновить по клику данныеб 2 - утставить alarmmanager
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,13 +66,11 @@ public class FragmentCalc extends Fragment {
 
         frag = inflater.inflate(R.layout.fragment_calc, container, false);
         handler = new Handler(Looper.getMainLooper()); // handler для главного потока
-        clMain = frag.findViewById(R.id.clMain);
 
         tvUpdate = frag.findViewById(R.id.tvUpdate); // кнопка изменить валюту
         imgUpdate = frag.findViewById(R.id.imgUpdate); // кнопка обновить валюту
         imgSetting = frag.findViewById(R.id.imgSetting); // кнопка настроек alarmmanager обновления валюты
         progressBar = frag.findViewById(R.id.progressBar);
-
 
         cardVEditCurrencyLeft = frag.findViewById(R.id.cardVEditCurrencyLeft); // кнопка изменить валюту
         cardVEditCurrencyRight = frag.findViewById(R.id.cardVEditCurrencyRight); // кнопка изменить валюту
@@ -93,6 +88,7 @@ public class FragmentCalc extends Fragment {
         edPriceLeft.setText(((MainActivity)getActivity()).loadSettingString("sharedPrefPriceLeft", ""));
         edPriceRight.setText(((MainActivity)getActivity()).loadSettingString("sharedPrefPriceRight", ""));
 
+        // обновить даныные курсов, запустить progressBar
         imgUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,7 +102,6 @@ public class FragmentCalc extends Fragment {
                             cardVEditCurrencyRight.setClickable(false);
                     }
                 });
-
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
@@ -119,14 +114,13 @@ public class FragmentCalc extends Fragment {
             }
         });
 
+        // переход во fragmentAlarm для установки менеджера
         imgSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((MainActivity)getActivity()).flipCard("gofragmentAlarm"); // метод анимации и перехода во fragmentAlarm
             }
         });
-
-
 
         // клики по CardView это переход во FragmentList для просмотра спика валют для выбора
         cardVEditCurrencyLeft.setOnClickListener(new View.OnClickListener() { // если нажали изменить валюту слева
@@ -140,14 +134,6 @@ public class FragmentCalc extends Fragment {
             @Override
             public void onClick(View view) {
               temp = "clickRight"; // то запишем в общую переменную строку клика
-
-//                FragmentList fragmentList = new FragmentList();
-//                FragmentManager fragmentManager = ((MainActivity)getActivity()).getSupportFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.ll_frag_list, fragmentList);
-//                fragmentTransaction.addToBackStack(null);
-//                fragmentTransaction.commit();
-
                 ((MainActivity)getActivity()).flipCard("goFragmentList"); // метод анимации и перехода во fragmentList
             }
         });
@@ -234,8 +220,6 @@ public class FragmentCalc extends Fragment {
                     }
                     flagHashMap = false;  // флаг чтобы broadcastReceiverHashMap заходил в условие один раз
                 }
-
-
             }
         };
         // создаем фильтр для BroadcastReceiver
@@ -244,8 +228,9 @@ public class FragmentCalc extends Fragment {
         // регистрируем (включаем) BroadcastReceiver
         getActivity().registerReceiver(broadcastReceiverHashMap, intentFilter2);
 
-        calculation();
+        calculation(); // метод работы textWatcher
 
+        // данный фокус установлен для совметсной работы с textWatcher
         edPriceLeft.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -256,6 +241,7 @@ public class FragmentCalc extends Fragment {
                 }
             }
         });
+        // данный фокус установлен для совметсной работы с textWatcher
         edPriceRight.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -269,7 +255,6 @@ public class FragmentCalc extends Fragment {
 
         return frag;
     }
-
 
     public void calculation()
     {
@@ -291,7 +276,6 @@ public class FragmentCalc extends Fragment {
                 }
                 else {
                         raschet(editable.toString().replace(",","."), "textWatcherLeft");
-
                  }
             }
         };
@@ -317,20 +301,10 @@ public class FragmentCalc extends Fragment {
                     }
                 }
             };
-
     }
-
 
     public void raschet(String enterNumbersStr, String textWatcher)
     {
-
-
-        Log.e("TextWatcher", " edPriceLeft.setText raschet enterNumbersStr=" + enterNumbersStr
-                + "textWatcher =" + textWatcher);
-        // тут храниться курс валюты слева и справа
-        // tempRateValuteLeft
-        // tempRateValuteRight
-
         double enterNumbersD = Double.parseDouble(String.valueOf(enterNumbersStr));
         // ТУТ ТОЛЬКО ДЛЯ RUR справа или слева ---------------------------------------------------------------------
         // ЕСЛИ СЛЕВА RUR А СПРАВА ЛЮБАЯ ДРУГАЯ ВАЛЮТА
@@ -413,6 +387,6 @@ public class FragmentCalc extends Fragment {
         Log.e("life", "FragmentCalc onDestroy");
         // дерегистрируем (выключаем) BroadcastReceiver
         getActivity().unregisterReceiver(broadcastReceiver);
+        getActivity().unregisterReceiver(broadcastReceiverHashMap);
     }
-
 }

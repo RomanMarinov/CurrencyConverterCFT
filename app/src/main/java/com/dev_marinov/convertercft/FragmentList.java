@@ -38,19 +38,16 @@ import com.loopj.android.http.AsyncHttpClient;
 import cz.msebera.android.httpclient.Header;
 
 public class FragmentList extends Fragment {
+// установка ааптера и кнопки отмены
 
     View frag;
     RecyclerView rvList;
     AdapterList adapterList;
     TextView tvCancel;
-    Animation animation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        Log.e("1111", "FragmentList загрузился");
-
         frag = inflater.inflate(R.layout.fragment_list, container, false);
 
         rvList = frag.findViewById(R.id.rvList);
@@ -69,11 +66,6 @@ public class FragmentList extends Fragment {
             }
         });
 
-
         return frag;
     }
-
-
-
-
 }
