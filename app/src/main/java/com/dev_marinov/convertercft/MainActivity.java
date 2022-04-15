@@ -119,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
         window.setStatusBarColor(getResources().getColor(android.R.color.white));
         window.setNavigationBarColor(getResources().getColor(android.R.color.black));
         window.setBackgroundDrawable(background);
-
     }
 
     public void getData()

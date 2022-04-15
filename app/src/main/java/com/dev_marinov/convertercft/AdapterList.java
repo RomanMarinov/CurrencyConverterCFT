@@ -42,7 +42,7 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.Holder> {
         if(objectListValute != null)
         {
             holder.cardView.setAnimation(AnimationUtils.loadAnimation(context, R.anim.scale_up_1));
-            holder.clCurrency.setAnimation(AnimationUtils.loadAnimation(context, R.anim.scale_up_1));
+            holder.clCurrencyMain.setAnimation(AnimationUtils.loadAnimation(context, R.anim.scale_up_1));
             holder.tvCurrency.setAnimation(AnimationUtils.loadAnimation(context, R.anim.scale_up_1));
             holder.tvKeyValuteName.setAnimation(AnimationUtils.loadAnimation(context, R.anim.scale_up_1));
 
@@ -70,12 +70,12 @@ public class AdapterList extends RecyclerView.Adapter<AdapterList.Holder> {
 
     public class Holder extends RecyclerView.ViewHolder{
         CardView cardView;
-        ConstraintLayout clCurrency;
+        ConstraintLayout clCurrencyMain;
         TextView tvCurrency, tvKeyValuteName;
 
         public Holder(View view) {
             super(view);
-            clCurrency = view.findViewById(R.id.clCurrency);
+            clCurrencyMain = view.findViewById(R.id.clCurrencyMain);
             tvCurrency = view.findViewById(R.id.tvCurrency);
             tvKeyValuteName = view.findViewById(R.id.tvKeyValuteName);
             cardView = view.findViewById(R.id.cardView);
