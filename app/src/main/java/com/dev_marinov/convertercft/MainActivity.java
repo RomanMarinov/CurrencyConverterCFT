@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().popBackStack();
         }
 
-        if(string.equals("goFragmentList"))
+        if(string.equals("goFragmentList")) // переход во фрагмент со списком валют
         {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
 
-        if(string.equals("gofragmentAlarm"))
+        if(string.equals("gofragmentAlarm")) // переход во фрагмент установки регулаярного обновления
         {
             getSupportFragmentManager()
                     .beginTransaction()
